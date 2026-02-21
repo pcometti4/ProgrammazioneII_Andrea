@@ -1,0 +1,5 @@
+Si facciano i seguenti esercizi, senza usare funzioni di libreria che risolvono esattamente tali problemi
+- Si scriva un programma il cui main legge un intero non negativo da tastiera (se negativo, lo richiede ad oltranza) e lo trasforma in una stringa che rappresenta lo stesso numero in binario, che infine stampa. Per esempio, se viene immesso l'intero 123, deve costruire e poi stampare la stringa "1111011".
+- Si faccia la stessa cosa in ottale e in esadecimale.
+- Si faccia la stessa cosa in Base58, che è una numerazione le cui cifre sono le cifre arabe da 1 a 9, seguite dalle lettere alfabetiche maiuscole (tranne O e I) e poi dalle lettere alfabetiche minuscole (tranne la l). Si veda la descrizione qui -> https://learnmeabitcoin.com/technical/keys/base58/.
+- Si scriva un programma Java che legge una frase da tastiera e determina se tale frase è palindroma.
