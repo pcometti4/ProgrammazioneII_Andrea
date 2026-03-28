@@ -1,118 +1,96 @@
-🧩 Esercizio: Sistema di Punteggi di Giochi
-1. Interfaccia
-
-Si definisca una interfaccia che rappresenta un punteggio:
-
-public interface Score extends Comparable<Score> {
-int getPoints(); // restituisce il punteggio normalizzato
+# 🧩 Esercizio: Misure Fisiche
+## Contesto
+Si vuole modellare un sistema di misure fisiche (lunghezze, pesi, temperature), ognuna espressa in un'unità di misura specifica, con la possibilità di confrontarle, ordinarle e stamparle in modo appropriato.
+1. i crei un'interfaccia Measure che rappresenta una misura fisica generica:
+  ```java
+public interface Measure extends Comparable<Measure> {
+    double getRawValue();   // restituisce il valore grezzo nella sua unità
+    double toBaseUnit();    // converte il valore nell'unità base della categoria
 }
-2. Classe astratta
+  ```
+2. Si completi la seguente classe astratta AbstractMeasure:
+  ```java
+public abstract class AbstractMeasure implements Measure {
+    private final double rawValue;
 
-Si completi la seguente classe astratta:
-
-public abstract class AbstractScore implements Score {
-private final int points;
-
-    protected AbstractScore(int points) {
-        // se points < 0 → IllegalArgumentException
-        // altrimenti inizializza
+    protected AbstractMeasure(double rawValue) {
+        // se rawValue è strettamente negativo lancia IllegalArgumentException
+        // (le misure fisiche assolute non possono essere negative in questo sistema)
         ...
     }
 
-    public final int getPoints() {
-        ...
-    }
+    public final double getRawValue() { ... }
 
-    // nome del gioco (es: "Calcio", "Basket", ...)
-    protected abstract String getGameName();
+    // restituisce il simbolo dell'unità di misura (es. "km", "kg", "°C")
+    protected abstract String getUnitSymbol();
 
-    // fattore di normalizzazione (serve per confrontare giochi diversi)
-    protected abstract double getWeight();
-
-    // punteggio normalizzato
-    public double getNormalizedScore() {
-        ...
-    }
-
-    public String toString() {
-        // es: "Calcio: 3 punti"
-        ...
-    }
+    // restituisce una stringa nel formato "valore simbolo", es. "3.50 km"
+    public String toString() { ... }
 
     public final boolean equals(Object other) {
-        // due score sono uguali se hanno lo stesso punteggio normalizzato
+        // due misure sono uguali se e solo se hanno lo stesso valore in unità base
         ...
     }
 
-    public final int compareTo(Score other) {
-        // confronto su punteggio normalizzato
+    public final int compareTo(Measure other) {
+        // ordinamento crescente per valore in unità base
         ...
     }
 }
-3. Sottoclassi concrete
+```
 
-Si implementino:
+> **Nota:** l'unità base per le lunghezze è il **metro**, per i pesi il **grammo**, per le temperature il **kelvin**.
 
-SoccerScore
-→ vittoria = 3 punti
-BasketScore
-→ punti diretti (es: 85 punti)
-TennisScore
-→ punteggio convertito (es: set vinti → moltiplicati per 10)
+---
 
-Ogni classe:
+**3.** Si scrivano le seguenti sottoclassi concrete di `AbstractMeasure`:
 
-definisce nome gioco
-definisce peso (getWeight())
+| Classe | Unità | Simbolo | Conversione in unità base |
+|---|---|---|---|
+| `Meters` | metro | `m` | × 1 |
+| `Kilometers` | chilometro | `km` | × 1000 |
+| `Centimeters` | centimetro | `cm` | × 0.01 |
+| `Grams` | grammo | `g` | × 1 |
+| `Kilograms` | chilogrammo | `kg` | × 1000 |
+| `Celsius` | grado Celsius | `°C` | + 273.15 |
+| `Kelvin` | kelvin | `K` | × 1 |
 
-⚠️ NON ridefinire toString()
+Non si ridefinisca `toString()` in queste sottoclassi: quello di `AbstractMeasure` deve funzionare per tutte.
 
-4. Comportamento speciale (override)
+---
 
-Si implementi:
+**4.** Si implementi una sottoclasse concreta `ScientificNotationMeasure` di `Meters`, che ridefinisce **solo** `toString()` per stampare il valore in notazione scientifica (es. `3500.0 m` → `3.50E3 m`). Si usi `String.format("%.2E %s", ...)`.
 
-public class BonusScore extends SoccerScore
-ridefinisce solo toString()
-aggiunge un bonus testuale:
+---
 
-Esempio:
+**5.** Si implementi una sottoclasse concreta `FeetAndInches` di `AbstractMeasure`, che rappresenta una lunghezza espressa in piedi e pollici. Il costruttore accetta **piedi** e **pollici** separatamente. L'unità base rimane il metro (1 piede = 0.3048 m, 1 pollice = 0.0254 m). Si ridefinisca `toString()` per stampare nel formato `"2ft 5in"`. Si presti attenzione a come gestire `getRawValue()` (si può scegliere di restituire i piedi interi, documentando la scelta).
 
-Calcio: 3 punti (bonus fair play)
-5. Nuova tipologia
+---
 
-Si implementi:
+**6.** Si scriva una classe `MainMeasures` con un metodo `main()` che:
+- chiede all'utente di inserire una lunghezza in metri
+- crea la misura in metri, in chilometri, in centimetri e in notazione scientifica, e le stampa tutte
+- chiede poi di inserire una massa in grammi e stampa il valore in grammi e in chilogrammi
+- chiede infine una temperatura in Celsius e la stampa sia in Celsius che in Kelvin
 
-public class ArcadeScore extends AbstractScore
-rappresenta giochi arcade
-il punteggio viene ridotto dividendo per 100
-NON ridefinire toString()
-6. Classe di test
+Esempio con lunghezza `3500`, massa `75000`, temperatura `100`:
+```
+3500.00 m
+3.50 km
+350000.00 cm
+3.50E3 m
+75000.00 g
+75.00 kg
+100.00 °C
+373.15 K
+  ```
 
-Scrivere:
-
-public class MainScores
-
-Che:
-
-legge un intero ≥ 0
-crea:
-soccer
-basket
-tennis
-bonus
-arcade
-stampa tutto
-7. Ordinamento
-
-Scrivere:
-
-public class MainScoresSort
-
-Array con:
-
-SoccerScore(3)
-BasketScore(80)
-TennisScore(2)
-ArcadeScore(5000)
-
-Ordinare e stampare.
+7. Si scriva una classe MainMeasuresSort con un metodo main() che crea un array di Measure con:
+  ```
+1.5 km
+800 cm
+3 m
+0 ft 70 in
+0.002 km in notazione scientifica
+  ```
+Lo ordina con Arrays.sort(...) e lo stampa con Arrays.toString(...). L'ordinamento dovrà avvenire per valore convertito in unità base (cioè in metri), così misure eterogenee risultano confrontabili.
