@@ -8,39 +8,40 @@
 }
   ```
 2. Si completi la seguente implementazione astratta di un Number, che fornisce le funzionalità comuni a tutti i numeri, cioè il controllo sulla non negatività del valore, l’accesso al valore, la traduzione in stringa e il metodo per il test di uguaglianza:
-   public abstract class AbstractNumber implements Number {
-   private final int value;
+
   ```java
+public abstract class AbstractNumber implements Number { 
+    private final int value;
 
-protected AbstractNumber(int value) {
-// se value è negativo, esegue throw new IllegalArgumentException(); altrimenti inizializza il campo value
-...
-}
-
-// restituisce il valore di questo numero
-public final int getValue() { ... }
-
-// restituice la base di numerazione di questo numero
-protected abstract int getBase();
-
-// restituisce il carattere che rappresenta la cifra "digit" nella base di numerazione
-// di questo numero. Sarà sempre vero che 0 <= digit < getBase();
-// per esempio, in base sedici si avrà getCharForDigit(10) == 'A' e
-// in base otto si avrà getCharForDigit(7) == '7'
-protected abstract char getCharForDigit(int digit);
-
-// restituisce una stringa che rappresenta il numero nella sua base di numerazione
-public String toString() { ... }
-
-public final boolean equals(Object other) {
-// due numeri sono uguali se e solo se hanno lo stesso valore
-...
-}
-
-public final int compareTo(Number other) {
-// l'ordinamento fra i Number è quello crescente per valore
-...
-}
+    protected AbstractNumber(int value) {
+    // se value è negativo, esegue throw new IllegalArgumentException(); altrimenti inizializza il campo value
+        ...
+    }
+    
+    // restituisce il valore di questo numero
+    public final int getValue() { ... }
+    
+    // restituice la base di numerazione di questo numero
+    protected abstract int getBase();
+    
+    // restituisce il carattere che rappresenta la cifra "digit" nella base di numerazione
+    // di questo numero. Sarà sempre vero che 0 <= digit < getBase();
+    // per esempio, in base sedici si avrà getCharForDigit(10) == 'A' e
+    // in base otto si avrà getCharForDigit(7) == '7'
+    protected abstract char getCharForDigit(int digit);
+    
+    // restituisce una stringa che rappresenta il numero nella sua base di numerazione
+    public String toString() { ... }
+    
+    public final boolean equals(Object other) {
+    // due numeri sono uguali se e solo se hanno lo stesso valore
+        ...
+    }
+    
+    public final int compareTo(Number other) {
+    // l'ordinamento fra i Number è quello crescente per valore
+        ...
+    }
 }
   ```
 3. Si scrivano le sottoclassi concrete DecimalNumber, BinaryNumber, OctalNumber ed HexNumber di AbstractNumber, che rappresentano, rispettivamente, un numero in base 10, 2, 8 e 16. Queste classi si instanziano con il loro costruttore, a cui viene passato il valore del numero. Non si ridefinisca, in queste quattro sottoclassi, il metodo toString(): quello ereditato da AbstractNumber dovrà funzionare per tutte queste sottoclassi, traducendo il valore del numero nella giusta base di numerazione.
